@@ -1,0 +1,161 @@
+<h2>How should the curriculum be displayed?</h2>
+<p class="subtitle">After upload completes, this is how the lesson plans appear</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="week-accordion" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <div style="font-size:10px;font-weight:700;color:#1e293b;margin-bottom:10px">📚 Biology I — 20 lessons generated</div>
+
+        <!-- Week 1 expanded -->
+        <div style="border:1px solid #c7d2fe;border-radius:8px;margin-bottom:6px;overflow:hidden">
+          <div style="padding:8px 12px;background:#eef2ff;display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:10px;font-weight:700;color:#4338ca">Week 1 — Introduction to Biology</div>
+            <div style="font-size:9px;color:#6366f1">5 lessons ▲</div>
+          </div>
+          <div style="padding:8px 12px">
+            <div style="display:flex;gap:4px;margin-bottom:5px;align-items:center">
+              <div style="font-size:8px;font-weight:600;color:#94a3b8;width:30px">Day 1</div>
+              <div style="flex:1;background:#f8fafc;border-radius:4px;padding:5px 8px;border-left:2px solid #6366f1">
+                <div style="font-size:9px;color:#1e293b">Understand what biology is and why it matters</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <div style="font-size:8px;font-weight:600;color:#94a3b8;width:30px">Day 2</div>
+              <div style="flex:1;background:#f8fafc;border-radius:4px;padding:5px 8px;border-left:2px solid #6366f1">
+                <div style="font-size:9px;color:#1e293b">Identify the characteristics of living things</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week 2 collapsed -->
+        <div style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px">
+          <div style="padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:10px;font-weight:600;color:#64748b">Week 2 — Cell Structure</div>
+            <div style="font-size:9px;color:#94a3b8">5 lessons ▼</div>
+          </div>
+        </div>
+
+        <!-- Week 3 collapsed -->
+        <div style="border:1px solid #e2e8f0;border-radius:8px">
+          <div style="padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:10px;font-weight:600;color:#64748b">Week 3 — DNA & Genetics</div>
+            <div style="font-size:9px;color:#94a3b8">5 lessons ▼</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Week Accordion</h3>
+      <p>Weeks collapse/expand. See objectives at a glance, click a lesson to see full detail. Great for scanning.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="lesson-cards" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <div style="display:flex;gap:6px;margin-bottom:10px;align-items:center">
+          <div style="font-size:10px;font-weight:700;color:#1e293b">Biology I</div>
+          <div style="margin-left:auto;display:flex;gap:4px">
+            <div style="font-size:8px;padding:3px 7px;background:#eef2ff;color:#6366f1;border-radius:4px;font-weight:600">All weeks</div>
+            <div style="font-size:8px;padding:3px 7px;background:#f1f5f9;color:#94a3b8;border-radius:4px">Wk 1</div>
+            <div style="font-size:8px;padding:3px 7px;background:#f1f5f9;color:#94a3b8;border-radius:4px">Wk 2</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px;box-shadow:0 1px 2px rgba(0,0,0,0.04)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <div style="font-size:8px;font-weight:700;color:#6366f1">W1 D1</div>
+              <div style="font-size:7px;color:#94a3b8">Introduction</div>
+            </div>
+            <div style="font-size:9px;color:#1e293b;margin-bottom:5px;font-weight:500">Understand what biology is</div>
+            <div style="font-size:8px;color:#64748b;margin-bottom:4px">• Living vs non-living</div>
+            <div style="font-size:8px;color:#64748b;margin-bottom:4px">• Cells as basic unit</div>
+            <div style="font-size:7px;padding:3px 5px;background:#f0fdf4;color:#16a34a;border-radius:3px;display:inline-block">Activity: Label a cell</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px;box-shadow:0 1px 2px rgba(0,0,0,0.04)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <div style="font-size:8px;font-weight:700;color:#6366f1">W1 D2</div>
+              <div style="font-size:7px;color:#94a3b8">Cell Structure</div>
+            </div>
+            <div style="font-size:9px;color:#1e293b;margin-bottom:5px;font-weight:500">Identify parts of a cell</div>
+            <div style="font-size:8px;color:#64748b;margin-bottom:4px">• Nucleus function</div>
+            <div style="font-size:8px;color:#64748b;margin-bottom:4px">• Membrane transport</div>
+            <div style="font-size:7px;padding:3px 5px;background:#fef3c7;color:#d97706;border-radius:3px;display:inline-block">Exit: Draw organelles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Lesson Cards Grid</h3>
+      <p>Every lesson as a card showing all 4 fields. Filter by week. Rich, information-dense, "dashboard" feel.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="timeline" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <div style="font-size:10px;font-weight:700;color:#1e293b;margin-bottom:10px">Biology I — Semester at a Glance</div>
+
+        <!-- Week grid -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:8px">
+          <div style="font-size:7px;color:#94a3b8;text-align:center;padding-bottom:2px">Mon</div>
+          <div style="font-size:7px;color:#94a3b8;text-align:center;padding-bottom:2px">Tue</div>
+          <div style="font-size:7px;color:#94a3b8;text-align:center;padding-bottom:2px">Wed</div>
+          <div style="font-size:7px;color:#94a3b8;text-align:center;padding-bottom:2px">Thu</div>
+          <div style="font-size:7px;color:#94a3b8;text-align:center;padding-bottom:2px">Fri</div>
+          <!-- Week 1 -->
+          <div style="background:#6366f1;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#fff;font-weight:600">W1</div>
+            <div style="font-size:6px;color:#c7d2fe;margin-top:2px">Intro</div>
+          </div>
+          <div style="background:#818cf8;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#fff;font-weight:600">W1</div>
+            <div style="font-size:6px;color:#c7d2fe;margin-top:2px">Cells</div>
+          </div>
+          <div style="background:#818cf8;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#fff;font-weight:600">W1</div>
+            <div style="font-size:6px;color:#c7d2fe;margin-top:2px">DNA</div>
+          </div>
+          <div style="background:#a5b4fc;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#fff;font-weight:600">W1</div>
+            <div style="font-size:6px;color:#e0e7ff;margin-top:2px">Evol.</div>
+          </div>
+          <div style="background:#a5b4fc;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#fff;font-weight:600">W1</div>
+            <div style="font-size:6px;color:#e0e7ff;margin-top:2px">Eco</div>
+          </div>
+          <!-- Week 2 dots -->
+          <div style="background:#e0e7ff;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#6366f1">W2</div>
+          </div>
+          <div style="background:#e0e7ff;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#6366f1">W2</div>
+          </div>
+          <div style="background:#e0e7ff;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#6366f1">W2</div>
+          </div>
+          <div style="background:#f1f5f9;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#94a3b8">W2</div>
+          </div>
+          <div style="background:#f1f5f9;border-radius:4px;padding:6px 3px;text-align:center">
+            <div style="font-size:7px;color:#94a3b8">W2</div>
+          </div>
+        </div>
+
+        <!-- Selected lesson detail -->
+        <div style="background:#eef2ff;border-radius:6px;padding:8px;border:1px solid #c7d2fe">
+          <div style="font-size:8px;font-weight:600;color:#6366f1;margin-bottom:4px">Week 1 · Monday — Click any cell to preview</div>
+          <div style="font-size:9px;color:#1e293b">Understand what biology is and why it matters to everyday life</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Calendar Grid</h3>
+      <p>16-week calendar grid. Click any day cell to see its lesson. Visual overview of the whole semester.</p>
+    </div>
+  </div>
+
+</div>

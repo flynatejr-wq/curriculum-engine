@@ -1,0 +1,146 @@
+<h2>How should the page be laid out?</h2>
+<p class="subtitle">All three show the same upload → curriculum flow, just arranged differently</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="centered-hero" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <!-- Nav -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px">
+          <div style="width:20px;height:20px;background:#6366f1;border-radius:5px"></div>
+          <span style="font-size:11px;font-weight:700;color:#1e293b">Curriculum Engine</span>
+        </div>
+        <!-- Hero upload -->
+        <div style="padding:24px 16px;text-align:center">
+          <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:4px">Build Your Semester Curriculum</div>
+          <div style="font-size:10px;color:#94a3b8;margin-bottom:14px">Upload a PDF textbook and get a full 16-week lesson plan in seconds</div>
+          <div style="border:2px dashed #c7d2fe;border-radius:10px;padding:18px;background:#eef2ff;margin:0 auto 12px;max-width:220px">
+            <div style="font-size:18px;margin-bottom:4px">📄</div>
+            <div style="font-size:10px;color:#6366f1;font-weight:600">Drop PDF here or click to upload</div>
+          </div>
+          <div style="display:flex;gap:6px;justify-content:center">
+            <input style="border:1px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:10px;color:#64748b;width:120px" placeholder="Textbook title...">
+            <div style="background:#6366f1;color:#fff;border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600">Generate ↗</div>
+          </div>
+        </div>
+        <!-- Results appear below -->
+        <div style="border-top:1px solid #f1f5f9;padding:12px 16px;background:#fafbff">
+          <div style="font-size:10px;font-weight:600;color:#6366f1;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Week 1 — Day 1</div>
+          <div style="background:#fff;border-radius:6px;padding:8px;border:1px solid #e2e8f0;margin-bottom:6px">
+            <div style="font-size:9px;color:#64748b;margin-bottom:3px">OBJECTIVE</div>
+            <div style="font-size:10px;color:#1e293b">Students will understand the core principles of...</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <div style="flex:1;background:#fff;border-radius:6px;padding:6px;border:1px solid #e2e8f0;font-size:9px;color:#64748b">KEY POINTS</div>
+            <div style="flex:1;background:#fff;border-radius:6px;padding:6px;border:1px solid #e2e8f0;font-size:9px;color:#64748b">ACTIVITY</div>
+            <div style="flex:1;background:#fff;border-radius:6px;padding:6px;border:1px solid #e2e8f0;font-size:9px;color:#64748b">EXIT TICKET</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Centered Hero</h3>
+      <p>Big centered upload zone at the top, curriculum results expand below. Clean, focused, single scroll.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="split-panel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <!-- Nav -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px">
+          <div style="width:20px;height:20px;background:#6366f1;border-radius:5px"></div>
+          <span style="font-size:11px;font-weight:700;color:#1e293b">Curriculum Engine</span>
+        </div>
+        <!-- Split layout -->
+        <div style="display:flex;height:160px">
+          <!-- Left: upload panel -->
+          <div style="width:42%;border-right:1px solid #f1f5f9;padding:12px;background:#fafbff">
+            <div style="font-size:10px;font-weight:700;color:#1e293b;margin-bottom:8px">Upload Textbook</div>
+            <div style="border:2px dashed #c7d2fe;border-radius:8px;padding:14px;text-align:center;background:#eef2ff;margin-bottom:8px">
+              <div style="font-size:16px;margin-bottom:3px">📄</div>
+              <div style="font-size:9px;color:#6366f1">Drop PDF here</div>
+            </div>
+            <input style="border:1px solid #e2e8f0;border-radius:5px;padding:5px 8px;font-size:9px;color:#64748b;width:100%;box-sizing:border-box;margin-bottom:6px" placeholder="Book title...">
+            <div style="background:#6366f1;color:#fff;border-radius:5px;padding:5px;font-size:9px;font-weight:600;text-align:center">Generate Curriculum</div>
+          </div>
+          <!-- Right: curriculum viewer -->
+          <div style="flex:1;padding:12px;overflow:hidden">
+            <div style="font-size:10px;font-weight:700;color:#1e293b;margin-bottom:8px">Curriculum</div>
+            <div style="display:flex;gap:4px;margin-bottom:8px">
+              <div style="font-size:8px;padding:3px 6px;background:#eef2ff;color:#6366f1;border-radius:4px;font-weight:600">Wk 1</div>
+              <div style="font-size:8px;padding:3px 6px;background:#f1f5f9;color:#64748b;border-radius:4px">Wk 2</div>
+              <div style="font-size:8px;padding:3px 6px;background:#f1f5f9;color:#64748b;border-radius:4px">Wk 3</div>
+              <div style="font-size:8px;padding:3px 6px;color:#94a3b8;border-radius:4px">...</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:8px;margin-bottom:5px">
+              <div style="font-size:8px;color:#6366f1;font-weight:600;margin-bottom:3px">Day 1</div>
+              <div style="font-size:9px;color:#1e293b">Understand the core principles...</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:8px">
+              <div style="font-size:8px;color:#6366f1;font-weight:600;margin-bottom:3px">Day 2</div>
+              <div style="font-size:9px;color:#94a3b8">Apply key concepts through...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Split Panel</h3>
+      <p>Upload controls pinned on the left, curriculum scrolls on the right. Always visible side-by-side.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="fullscreen-steps" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f8fafc;padding:16px;border-bottom:1px solid #e2e8f0">
+      <div style="background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;font-family:system-ui,sans-serif">
+        <!-- Nav with steps -->
+        <div style="padding:10px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:20px;height:20px;background:#6366f1;border-radius:5px"></div>
+            <span style="font-size:11px;font-weight:700;color:#1e293b">Curriculum Engine</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:18px;height:18px;background:#6366f1;border-radius:50%;font-size:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">1</div>
+            <div style="width:20px;height:1px;background:#e2e8f0"></div>
+            <div style="width:18px;height:18px;background:#f1f5f9;border-radius:50%;font-size:8px;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:700">2</div>
+            <div style="width:20px;height:1px;background:#e2e8f0"></div>
+            <div style="width:18px;height:18px;background:#f1f5f9;border-radius:50%;font-size:8px;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:700">3</div>
+          </div>
+        </div>
+        <!-- Step 1 full width -->
+        <div style="padding:20px 16px;text-align:center">
+          <div style="font-size:12px;font-weight:700;color:#1e293b;margin-bottom:3px">Step 1: Upload Your Textbook</div>
+          <div style="font-size:9px;color:#94a3b8;margin-bottom:14px">We'll extract and chunk the content automatically</div>
+          <div style="border:2px dashed #c7d2fe;border-radius:10px;padding:22px;background:#eef2ff;margin:0 auto 12px;max-width:200px">
+            <div style="font-size:22px;margin-bottom:4px">📄</div>
+            <div style="font-size:9px;color:#6366f1;font-weight:600">Drop PDF here</div>
+          </div>
+          <!-- Step indicators -->
+          <div style="display:flex;justify-content:center;gap:16px;margin-top:10px">
+            <div style="text-align:center">
+              <div style="font-size:16px">📄</div>
+              <div style="font-size:8px;color:#94a3b8;margin-top:2px">Upload</div>
+            </div>
+            <div style="font-size:12px;color:#e2e8f0;margin-top:8px">→</div>
+            <div style="text-align:center;opacity:0.4">
+              <div style="font-size:16px">⚙️</div>
+              <div style="font-size:8px;color:#94a3b8;margin-top:2px">Process</div>
+            </div>
+            <div style="font-size:12px;color:#e2e8f0;margin-top:8px">→</div>
+            <div style="text-align:center;opacity:0.4">
+              <div style="font-size:16px">📚</div>
+              <div style="font-size:8px;color:#94a3b8;margin-top:2px">Curriculum</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Full-Width Steps</h3>
+      <p>Progress indicator in nav, each stage takes the full page. Upload → processing → curriculum reveal.</p>
+    </div>
+  </div>
+
+</div>
