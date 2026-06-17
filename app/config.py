@@ -1,13 +1,11 @@
-from pydantic_settings import BaseSettings
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
+
     database_url: str
     openai_api_key: str
 
-    class Config:
-        env_file = ".env"
 
 settings = Settings()
