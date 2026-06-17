@@ -41,6 +41,7 @@ class SessionData(BaseModel):
     filename: str
     pages: list[PageContent]
     structure: StructureMap | None = None
+    schedule: "Schedule | None" = None
     created_at: datetime
 
 
@@ -95,3 +96,47 @@ class PaceResponse(BaseModel):
     session_id: str
     filename: str
     schedule: Schedule
+
+
+# ── Phase 3: Lesson Plans ─────────────────────────────────────────────────────
+
+class KeyConcept(BaseModel):
+    term: str
+    definition: str
+
+
+class Activity(BaseModel):
+    title: str
+    description: str
+    duration_minutes: int | None = None
+
+
+class AssessmentQuestion(BaseModel):
+    question: str
+    type: str  # "discussion" | "written" | "short_answer"
+
+
+class LessonPlan(BaseModel):
+    session_number: int
+    week_number: int
+    day_number: int
+    title: str
+    page_range: str
+    source_sections: list[str]
+    learning_objectives: list[str]
+    key_concepts: list[KeyConcept]
+    activities: list[Activity]
+    assessment_questions: list[AssessmentQuestion]
+    homework: str | None = None
+
+
+class GenerateRequest(BaseModel):
+    session_id: str
+
+
+class GenerateProgressEvent(BaseModel):
+    session_number: int
+    total_sessions: int
+    status: str          # "generating" | "done" | "error"
+    lesson: LessonPlan | None = None
+    error: str | None = None

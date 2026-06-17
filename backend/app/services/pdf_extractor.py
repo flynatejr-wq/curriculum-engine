@@ -19,6 +19,7 @@ def extract_pages(pdf_bytes: bytes) -> list[PageContent]:
             if block.get("type") != 0:   # skip image blocks
                 continue
             for line in block.get("lines", []):
+                line_parts: list[str] = []
                 for span in line.get("spans", []):
                     text = span.get("text", "").strip()
                     if not text:
@@ -30,11 +31,13 @@ def extract_pages(pdf_bytes: bytes) -> list[PageContent]:
                         font_size=round(span.get("size", 0), 1),
                         is_bold=is_bold,
                     ))
-                    text_parts.append(text)
+                    line_parts.append(text)
+                if line_parts:
+                    text_parts.append(" ".join(line_parts))
 
         pages.append(PageContent(
             page_num=page_num,
-            text=" ".join(text_parts),
+            text="\n".join(text_parts),
             blocks=blocks,
         ))
 

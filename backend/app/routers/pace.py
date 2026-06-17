@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas import PaceRequest, PaceResponse
 from app.services.pacing_engine import build_schedule
-from app.storage import get_session
+from app.storage import get_session, update_session
 
 router = APIRouter()
 
@@ -23,6 +23,9 @@ async def pace_curriculum(req: PaceRequest):
         total_weeks=req.total_weeks,
         sessions_per_week=req.sessions_per_week,
     )
+
+    session.schedule = schedule
+    update_session(session)
 
     return PaceResponse(
         session_id=req.session_id,

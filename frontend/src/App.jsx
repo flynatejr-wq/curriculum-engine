@@ -3,11 +3,16 @@ import UploadForm from './components/UploadForm'
 import StructureView from './components/StructureView'
 import CourseForm from './components/CourseForm'
 import ScheduleView from './components/ScheduleView'
+import LessonView from './components/LessonView'
 
 export default function App() {
   const [status, setStatus] = useState('idle')
   const [uploadData, setUploadData] = useState(null)
   const [scheduleData, setScheduleData] = useState(null)
+  const [lessons, setLessons] = useState({})          // session_number → LessonPlan
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [genProgress, setGenProgress] = useState(null) // { current, total }
+  const [activeLesson, setActiveLesson] = useState(null)
   const [error, setError] = useState(null)
 
   function handleUploadResult(result) {
@@ -30,6 +35,8 @@ export default function App() {
       const { paceCurriculum } = await import('./api.js')
       const data = await paceCurriculum(uploadData.session_id, weeks, sessionsPerWeek)
       setScheduleData(data)
+      setLessons({})
+      setGenProgress(null)
       setStatus('schedule')
     } catch (err) {
       setError(err.message)
@@ -37,12 +44,55 @@ export default function App() {
     }
   }
 
+  async function handleGenerateLessons() {
+    if (!scheduleData || isGenerating) return
+    setIsGenerating(true)
+    setError(null)
+    const total = scheduleData.schedule.total_sessions
+    setGenProgress({ current: 0, total })
+
+    try {
+      const { generateLessons } = await import('./api.js')
+      await generateLessons(uploadData.session_id, (event) => {
+        if (event.status === 'generating') {
+          setGenProgress({ current: event.session_number, total: event.total_sessions })
+        } else if (event.status === 'done' && event.lesson) {
+          setLessons(prev => ({ ...prev, [event.lesson.session_number]: event.lesson }))
+          setGenProgress({ current: event.session_number, total: event.total_sessions })
+        } else if (event.status === 'error') {
+          console.warn(`Lesson ${event.session_number} error:`, event.error)
+        }
+      })
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsGenerating(false)
+      setGenProgress(null)
+    }
+  }
+
+  function handleViewLesson(lesson) {
+    setActiveLesson(lesson)
+    setStatus('lesson')
+  }
+
+  function handleBackToSchedule() {
+    setActiveLesson(null)
+    setStatus('schedule')
+  }
+
   function reset() {
     setStatus('idle')
     setUploadData(null)
     setScheduleData(null)
+    setLessons({})
+    setIsGenerating(false)
+    setGenProgress(null)
+    setActiveLesson(null)
     setError(null)
   }
+
+  const breadcrumbVisible = status !== 'idle'
 
   return (
     <div className="app">
@@ -52,13 +102,13 @@ export default function App() {
             <div className="logo-mark" />
             <span className="logo-text">LessonGrove</span>
           </div>
-          {status !== 'idle' && (
+          {breadcrumbVisible && (
             <div className="breadcrumb">
-              <span className={status === 'uploading' || status === 'structure' || status === 'pacing' || status === 'schedule' ? 'crumb crumb--active' : 'crumb'}>Structure</span>
+              <span className={['uploading', 'structure', 'pacing', 'schedule', 'lesson'].includes(status) ? 'crumb crumb--active' : 'crumb'}>Structure</span>
               <span className="crumb-sep">›</span>
-              <span className={status === 'schedule' || status === 'pacing' ? 'crumb crumb--active' : 'crumb'}>Schedule</span>
+              <span className={['schedule', 'lesson'].includes(status) ? 'crumb crumb--active' : 'crumb'}>Schedule</span>
               <span className="crumb-sep">›</span>
-              <span className="crumb">Lessons</span>
+              <span className={status === 'lesson' ? 'crumb crumb--active' : 'crumb'}>Lessons</span>
             </div>
           )}
         </div>
@@ -102,7 +152,22 @@ export default function App() {
         )}
 
         {status === 'schedule' && scheduleData && (
-          <ScheduleView data={scheduleData} onReset={reset} />
+          <>
+            <ScheduleView
+              data={scheduleData}
+              lessons={lessons}
+              isGenerating={isGenerating}
+              genProgress={genProgress}
+              onGenerateLessons={handleGenerateLessons}
+              onViewLesson={handleViewLesson}
+              onReset={reset}
+            />
+            {error && <p className="form-error" style={{ textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
+          </>
+        )}
+
+        {status === 'lesson' && activeLesson && (
+          <LessonView lesson={activeLesson} onBack={handleBackToSchedule} />
         )}
       </main>
     </div>

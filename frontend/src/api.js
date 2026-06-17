@@ -35,3 +35,33 @@ export async function paceCurriculum(sessionId, totalWeeks, sessionsPerWeek) {
   }
   return res.json()
 }
+
+export async function generateLessons(sessionId, onProgress) {
+  const res = await fetch(`${BASE_URL}/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id: sessionId }),
+  })
+  if (!res.ok) {
+    let msg
+    try { const b = await res.json(); msg = b.detail || JSON.stringify(b) }
+    catch { msg = await res.text() }
+    throw new Error(msg || `Generate failed (${res.status})`)
+  }
+  const reader = res.body.getReader()
+  const decoder = new TextDecoder()
+  let buffer = ''
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop()
+    for (const line of lines) {
+      if (line.startsWith('data: ')) {
+        const json = line.slice(6).trim()
+        if (json) onProgress(JSON.parse(json))
+      }
+    }
+  }
+}
