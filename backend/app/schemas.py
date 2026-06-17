@@ -56,3 +56,42 @@ class StructureResponse(BaseModel):
     session_id: str
     filename: str
     structure: StructureMap
+
+
+# ── Phase 2: Pacing ──────────────────────────────────────────────────────────
+
+class ScheduleUnit(BaseModel):
+    title: str
+    start_page: int
+    end_page: int
+    source: str  # "chapter" | "section"
+
+
+class SessionSlot(BaseModel):
+    session_number: int
+    week_number: int
+    day_number: int       # 1-based within the week
+    units: list[ScheduleUnit]
+    start_page: int
+    end_page: int
+    page_count: int
+
+
+class Schedule(BaseModel):
+    total_weeks: int
+    sessions_per_week: int
+    total_sessions: int
+    target_pages_per_session: int
+    sessions: list[SessionSlot]
+
+
+class PaceRequest(BaseModel):
+    session_id: str
+    total_weeks: int
+    sessions_per_week: int
+
+
+class PaceResponse(BaseModel):
+    session_id: str
+    filename: str
+    schedule: Schedule
