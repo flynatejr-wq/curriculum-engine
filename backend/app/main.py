@@ -9,7 +9,7 @@ async def lifespan(app: FastAPI):
     yield  # no DB to init; session store is a module-level dict
 
 
-app = FastAPI(title="Studi Buddi API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="LessonGrove API", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

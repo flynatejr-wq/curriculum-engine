@@ -25,7 +25,7 @@ export default function App() {
         <div className="header-inner">
           <div className="logo">
             <div className="logo-mark" />
-            <span className="logo-text">Studi Buddi for Teachers</span>
+            <span className="logo-text">LessonGrove</span>
           </div>
         </div>
       </header>
