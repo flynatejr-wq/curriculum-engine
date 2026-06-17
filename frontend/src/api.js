@@ -16,3 +16,22 @@ export async function uploadPDF(file) {
   }
   return res.json()
 }
+
+export async function paceCurriculum(sessionId, totalWeeks, sessionsPerWeek) {
+  const res = await fetch(`${BASE_URL}/pace`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      session_id: sessionId,
+      total_weeks: totalWeeks,
+      sessions_per_week: sessionsPerWeek,
+    }),
+  })
+  if (!res.ok) {
+    let msg
+    try { const b = await res.json(); msg = b.detail || JSON.stringify(b) }
+    catch { msg = await res.text() }
+    throw new Error(msg || `Pace failed (${res.status})`)
+  }
+  return res.json()
+}

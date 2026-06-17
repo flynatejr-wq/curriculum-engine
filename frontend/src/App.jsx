@@ -1,22 +1,47 @@
 import { useState } from 'react'
 import UploadForm from './components/UploadForm'
 import StructureView from './components/StructureView'
+import CourseForm from './components/CourseForm'
+import ScheduleView from './components/ScheduleView'
 
 export default function App() {
-  const [state, setState] = useState({ status: 'idle', data: null, message: null })
+  const [status, setStatus] = useState('idle')
+  const [uploadData, setUploadData] = useState(null)
+  const [scheduleData, setScheduleData] = useState(null)
+  const [error, setError] = useState(null)
 
-  function handleResult(result) {
+  function handleUploadResult(result) {
     if (result.status === 'uploading') {
-      setState({ status: 'uploading', data: null, message: `Uploading ${result.file.name}…` })
+      setStatus('uploading')
+      setError(null)
     } else if (result.status === 'done') {
-      setState({ status: 'done', data: result.data, message: null })
+      setUploadData(result.data)
+      setStatus('structure')
     } else {
-      setState({ status: 'error', data: null, message: result.message })
+      setError(result.message)
+      setStatus('idle')
+    }
+  }
+
+  async function handlePace(weeks, sessionsPerWeek) {
+    setStatus('pacing')
+    setError(null)
+    try {
+      const { paceCurriculum } = await import('./api.js')
+      const data = await paceCurriculum(uploadData.session_id, weeks, sessionsPerWeek)
+      setScheduleData(data)
+      setStatus('schedule')
+    } catch (err) {
+      setError(err.message)
+      setStatus('structure')
     }
   }
 
   function reset() {
-    setState({ status: 'idle', data: null, message: null })
+    setStatus('idle')
+    setUploadData(null)
+    setScheduleData(null)
+    setError(null)
   }
 
   return (
@@ -27,31 +52,57 @@ export default function App() {
             <div className="logo-mark" />
             <span className="logo-text">LessonGrove</span>
           </div>
+          {status !== 'idle' && (
+            <div className="breadcrumb">
+              <span className={status === 'uploading' || status === 'structure' || status === 'pacing' || status === 'schedule' ? 'crumb crumb--active' : 'crumb'}>Structure</span>
+              <span className="crumb-sep">›</span>
+              <span className={status === 'schedule' || status === 'pacing' ? 'crumb crumb--active' : 'crumb'}>Schedule</span>
+              <span className="crumb-sep">›</span>
+              <span className="crumb">Lessons</span>
+            </div>
+          )}
         </div>
       </header>
+
       <main className="main">
-        {state.status === 'idle' && (
+        {status === 'idle' && (
           <div className="hero">
-            <h1 className="hero-title">Analyse Your Textbook Structure</h1>
-            <p className="hero-subtitle">Upload a PDF to detect its chapter and section breakdown before generating your curriculum.</p>
-            <UploadForm onResult={handleResult} disabled={false} />
+            <h1 className="hero-title">Turn any textbook into a full semester curriculum</h1>
+            <p className="hero-subtitle">Upload a PDF — LessonGrove detects your book's structure, builds a paced schedule, and writes every lesson plan grounded in your actual text.</p>
+            <UploadForm onResult={handleUploadResult} disabled={false} />
+            {error && <p className="form-error">{error}</p>}
           </div>
         )}
-        {state.status === 'uploading' && (
+
+        {status === 'uploading' && (
           <div className="hero hero--loading">
             <div className="spinner-large" />
-            <p className="status-msg">Extracting text and detecting chapter structure…</p>
-            <p className="status-note">This may take a moment for large textbooks.</p>
+            <p className="status-msg">Analysing textbook structure…</p>
+            <p className="status-note">Extracting text and detecting chapters. May take a moment for large books.</p>
           </div>
         )}
-        {state.status === 'error' && (
-          <div className="hero hero--error">
-            <p className="error-msg">❌ {state.message}</p>
-            <button className="reset-btn" onClick={reset}>Try Again</button>
+
+        {status === 'structure' && uploadData && (
+          <div className="two-col">
+            <div className="two-col-main">
+              <StructureView data={uploadData} onReset={reset} hideReset />
+            </div>
+            <div className="two-col-side">
+              <CourseForm onSubmit={handlePace} disabled={false} />
+              {error && <p className="form-error">{error}</p>}
+            </div>
           </div>
         )}
-        {state.status === 'done' && state.data && (
-          <StructureView data={state.data} onReset={reset} />
+
+        {status === 'pacing' && (
+          <div className="hero hero--loading">
+            <div className="spinner-large" />
+            <p className="status-msg">Building schedule…</p>
+          </div>
+        )}
+
+        {status === 'schedule' && scheduleData && (
+          <ScheduleView data={scheduleData} onReset={reset} />
         )}
       </main>
     </div>

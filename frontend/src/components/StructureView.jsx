@@ -1,4 +1,4 @@
-export default function StructureView({ data, onReset }) {
+export default function StructureView({ data, onReset, hideReset = false }) {
   const { filename, total_pages, structure } = data
   const { detection_method, chapters, warnings } = structure
 
@@ -40,9 +40,11 @@ export default function StructureView({ data, onReset }) {
         ))}
       </div>
 
-      <div className="actions">
-        <button className="reset-btn" onClick={onReset}>Upload Another</button>
-      </div>
+      {!hideReset && (
+        <div className="actions">
+          <button className="reset-btn" onClick={onReset}>Upload Another</button>
+        </div>
+      )}
     </div>
   )
 }
