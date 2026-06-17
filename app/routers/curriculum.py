@@ -28,7 +28,10 @@ async def get_curriculum(textbook_id: int, db: AsyncSession = Depends(get_db)):
     schedule = build_schedule(chunk_count=len(chunks))
     curriculum = []
     for entry in schedule:
-        chunk = chunks[entry["chunk_index"]]
+        idx = entry["chunk_index"]
+        if idx >= len(chunks):
+            continue
+        chunk = chunks[idx]
         if chunk.lesson:
             curriculum.append(
                 CurriculumEntry(

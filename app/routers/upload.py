@@ -1,6 +1,7 @@
+import asyncio
 import os
 import tempfile
-from fastapi import APIRouter, UploadFile, File, Form, Depends
+from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -31,9 +32,12 @@ async def upload_textbook(
     finally:
         os.unlink(tmp_path)
 
+    if not raw_text.strip():
+        raise HTTPException(status_code=422, detail="No extractable text found in PDF.")
+
     textbook = Textbook(title=title, content=raw_text)
     db.add(textbook)
-    await db.commit()
+    await db.flush()           # get textbook.id without committing
     await db.refresh(textbook)
 
     chunks = chunk_text(raw_text)
@@ -42,7 +46,7 @@ async def upload_textbook(
         chunk = Chunk(textbook_id=textbook.id, text=chunk_text_content)
         db.add(chunk)
         db_chunks.append(chunk)
-    await db.commit()
+    await db.flush()           # get chunk IDs
     for c in db_chunks:
         await db.refresh(c)
 
@@ -55,7 +59,7 @@ async def upload_textbook(
         if lessons_generated >= LESSON_LIMIT:
             break
         chunk = db_chunks[entry["chunk_index"]]
-        lesson_data = generate_lesson(chunk.text)
+        lesson_data = await asyncio.to_thread(generate_lesson, chunk.text)
         lesson = Lesson(chunk_id=chunk.id, lesson_json=lesson_data)
         db.add(lesson)
         lessons_generated += 1
@@ -68,7 +72,7 @@ async def upload_textbook(
             )
         )
 
-    await db.commit()
+    await db.commit()          # one commit for everything
 
     return UploadResponse(
         textbook_id=textbook.id,

@@ -105,3 +105,34 @@ async def test_upload_limits_lessons_to_20(test_app):
             )
     body = response.json()
     assert body["lessons_generated"] <= 20
+
+@pytest.mark.asyncio
+async def test_get_curriculum_returns_404_for_unknown_id(test_app):
+    async with AsyncClient(transport=ASGITransport(app=test_app), base_url="http://test") as client:
+        response = await client.get("/curriculum/9999")
+    assert response.status_code == 404
+
+@pytest.mark.asyncio
+async def test_get_curriculum_returns_200_after_upload(test_app):
+    pdf_bytes = make_pdf_bytes("Introduction to Algebra. " * 300)
+    with patch("app.services.lesson_generator.client") as mock_client:
+        mock_msg = MagicMock()
+        mock_msg.content = json.dumps(MOCK_LESSON)
+        mock_choice = MagicMock()
+        mock_choice.message = mock_msg
+        mock_client.chat.completions.create.return_value = MagicMock(choices=[mock_choice])
+
+        async with AsyncClient(transport=ASGITransport(app=test_app), base_url="http://test") as client:
+            upload_response = await client.post(
+                "/upload",
+                files={"file": ("book.pdf", pdf_bytes, "application/pdf")},
+                data={"title": "Algebra I"}
+            )
+            textbook_id = upload_response.json()["textbook_id"]
+            curriculum_response = await client.get(f"/curriculum/{textbook_id}")
+
+    assert curriculum_response.status_code == 200
+    body = curriculum_response.json()
+    assert "textbook_id" in body
+    assert "curriculum" in body
+    assert body["textbook_id"] == textbook_id
