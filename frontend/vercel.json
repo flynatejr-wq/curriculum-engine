@@ -1,6 +1,6 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "env": {
-    "VITE_API_URL": "https://lessongrove-api.up.railway.app"
+    "VITE_API_URL": "https://0afnrgug.up.railway.app"
   }
 }
