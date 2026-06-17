@@ -6,10 +6,8 @@ from app.schemas import SessionData, UploadResponse
 from app.services.pdf_extractor import extract_pages, is_scanned_pdf
 from app.services.structure_detector import detect_structure
 from app.storage import save_session
-from app.config import settings
 
 router = APIRouter()
-MAX_FILE_SIZE_MB = 50
 
 
 @router.post("/upload", response_model=UploadResponse)
@@ -18,9 +16,6 @@ async def upload_pdf(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
 
     pdf_bytes = await file.read()
-
-    if len(pdf_bytes) > MAX_FILE_SIZE_MB * 1024 * 1024:
-        raise HTTPException(status_code=413, detail=f"File exceeds {MAX_FILE_SIZE_MB}MB limit.")
 
     pages = await asyncio.to_thread(extract_pages, pdf_bytes)
 
@@ -34,12 +29,6 @@ async def upload_pdf(file: UploadFile = File(...)):
                 "This PDF appears to be a scanned image with no extractable text. "
                 "Please use a PDF with selectable text, or run OCR on it first."
             ),
-        )
-
-    if len(pages) > settings.max_session_pages:
-        raise HTTPException(
-            status_code=422,
-            detail=f"PDF has {len(pages)} pages. Maximum supported is {settings.max_session_pages}.",
         )
 
     # Detect structure while we still have pdf_bytes (needed for Tier 1 native TOC)
