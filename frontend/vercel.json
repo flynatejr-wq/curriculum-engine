@@ -2,7 +2,7 @@
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "build": {
     "env": {
-      "VITE_API_URL": "https://lessongrove.up.railway.app"
+      "VITE_API_URL": "https://lessongrove-render.onrender.com"
     }
   }
 }
