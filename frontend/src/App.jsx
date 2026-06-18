@@ -61,6 +61,7 @@ export default function App() {
     setIsGenerating(true); setError(null)
     const total = scheduleData.schedule.total_sessions
     setGenProgress({ current: 0, total })
+    const sseErrors = []
     try {
       await generateLessons(uploadData.session_id, event => {
         if (event.status === 'generating') {
@@ -70,12 +71,20 @@ export default function App() {
           setGenProgress({ current: event.session_number, total: event.total_sessions })
         } else if (event.status === 'error') {
           console.warn(`Lesson ${event.session_number} error:`, event.error)
+          sseErrors.push(event.error)
         }
       })
     } catch (err) {
       setError(err.message)
     } finally {
       setIsGenerating(false); setGenProgress(null)
+      if (sseErrors.length > 0) {
+        const first = sseErrors[0]
+        const msg = sseErrors.length === 1
+          ? `Lesson generation failed: ${first}`
+          : `${sseErrors.length} lessons failed. First error: ${first}`
+        setError(msg)
+      }
     }
   }
 

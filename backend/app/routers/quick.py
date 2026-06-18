@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from app.schemas import SessionSlot, ScheduleUnit, LessonPlan
 from app.services.lesson_generator import generate_lesson
 from app.storage import get_session
+from app.config import settings
 
 router = APIRouter()
 
@@ -17,6 +18,11 @@ class QuickLessonRequest(BaseModel):
 
 @router.post("/quick-lesson", response_model=LessonPlan)
 async def quick_lesson(req: QuickLessonRequest):
+    if not settings.anthropic_api_key:
+        raise HTTPException(
+            status_code=500,
+            detail="ANTHROPIC_API_KEY is not configured on the server. Add it to Railway → Variables and redeploy."
+        )
     session = get_session(req.session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found. Upload a PDF first.")

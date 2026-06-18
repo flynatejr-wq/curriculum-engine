@@ -5,6 +5,7 @@ from fastapi.responses import StreamingResponse
 from app.schemas import GenerateRequest, GenerateProgressEvent
 from app.services.lesson_generator import generate_lesson
 from app.storage import get_session
+from app.config import settings
 
 router = APIRouter()
 
@@ -62,6 +63,11 @@ async def _stream_lessons(session_id: str):
 
 @router.post("/generate")
 async def generate_lessons(req: GenerateRequest):
+    if not settings.anthropic_api_key:
+        raise HTTPException(
+            status_code=500,
+            detail="ANTHROPIC_API_KEY is not configured on the server. Add it to Railway → Variables and redeploy."
+        )
     session = get_session(req.session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found.")
