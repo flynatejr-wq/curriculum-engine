@@ -195,10 +195,8 @@ export default function App() {
               onGenerateLessons={handleGenerateLessons}
               onViewLesson={handleViewLesson}
               onReset={reset}
+              error={error}
             />
-            {error && (
-              <p className="error-banner" role="alert" style={{ marginTop: 16, textAlign: 'center' }}>{error}</p>
-            )}
           </>
         )}
 

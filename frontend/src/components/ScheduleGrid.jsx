@@ -1,6 +1,6 @@
 export default function ScheduleGrid({
   data, lessons, isGenerating, genProgress,
-  onGenerateLessons, onViewLesson, onReset,
+  onGenerateLessons, onViewLesson, onReset, error,
 }) {
   const { filename, schedule } = data
   const { total_weeks, sessions_per_week, total_sessions, sessions } = schedule
@@ -62,6 +62,19 @@ export default function ScheduleGrid({
           Start over
         </button>
       </div>
+
+      {error && (
+        <div className="error-banner" role="alert" style={{ marginBottom: 16 }}>
+          <strong>Couldn't generate lessons:</strong> {
+            error.toLowerCase().includes('session not found')
+              ? 'Your session expired (the server may have restarted). Please start over and re-upload your PDF.'
+              : error
+          }
+          {error.toLowerCase().includes('session') && (
+            <> &nbsp;<button className="btn-ghost" onClick={onReset} style={{ fontSize: 13 }}>Start over →</button></>
+          )}
+        </div>
+      )}
 
       <div className="schedule-grid-wrap">
         <div
